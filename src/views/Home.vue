@@ -4,12 +4,12 @@
       <template #left>
         <div class="home-nav">
           <div class="t1">下午好</div>
-          <div class="t2">Allen</div>
+          <div class="t2">{{userInfo.nickName}}</div>
         </div>
       </template>
       <template #right>
         <div class="home-search">
-          <van-search placeholder="输入商品名称" />
+          <van-search placeholder="输入商品名称" @focus="searchFocus" />
         </div>
       </template>
     </van-nav-bar>
@@ -83,7 +83,10 @@ export default {
       bannerData: [],
 
       //热卖商品数据
-      hotProduct: []
+      hotProduct: [],
+
+      //用户信息
+      userInfo: {}
     };
   },
 
@@ -93,6 +96,9 @@ export default {
 
     //获取热卖推荐商品
     this.getHotProduct();
+
+    //查询用户信息
+    this.getUserInfo();
   },
 
   methods: {
@@ -124,7 +130,7 @@ export default {
         .then((result) => {
           this.$toast.clear();
 
-          console.log("result ==> ", result);
+          
 
           if (result.data.code == 300) {
             this.bannerData = result.data.result;
@@ -133,7 +139,7 @@ export default {
         .catch((err) => {
           this.$toast.clear();
 
-          console.log("err ==> ", err);
+          
         });
     },
 
@@ -162,7 +168,7 @@ export default {
         .then((result) => {
           this.$toast.clear();
 
-          console.log("result ==> ", result);
+          
 
           if (result.data.code == 500) {
             this.hotProduct = result.data.result;
@@ -171,14 +177,55 @@ export default {
         .catch((err) => {
           this.$toast.clear();
 
-          console.log("err ==> ", err);
+          
         });
     },
 
     //查看商品详情页面
     goDetail(pid) {
       this.$router.push({name: 'Detail', params: {pid}});
-    }
+    },
+
+    //获取用户信息
+    getUserInfo() {
+        let tokenString = localStorage.getItem("__tk");
+
+      if (!tokenString) {
+        return;
+      }
+
+      this.$toast.loading({
+        message: "加载中...",
+        forbidClick: true,
+        duration: 0,
+      });
+
+      this.axios({
+        method: "GET",
+        url: "/findMy",
+        params: {
+          appkey: this.appkey,
+          tokenString
+        },
+      })
+        .then((result) => {
+          this.$toast.clear();
+          
+          if (result.data.code == 'A001') {
+            this.userInfo = result.data.result[0];
+          }
+
+        })
+        .catch((err) => {
+          this.$toast.clear();
+          
+        });
+      },
+
+     //搜索栏获取焦点
+     searchFocus() {
+       this.$router.push({name: 'Search'});
+     } 
   },
 };
 </script>

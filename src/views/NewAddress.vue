@@ -44,7 +44,7 @@ export default {
     //aid: 如果存在，则表示编辑地址, 否则新增地址
     this.aid = this.$route.query.aid;
 
-    console.log('this.aid ==> ', this.aid);
+    
 
     if (this.aid) {
       //根据地址aid查询地址数据
@@ -67,7 +67,7 @@ export default {
         return this.$router.push({ name: "Login" });
       }
 
-      console.log("content ==> ", content);
+      
       //复制content
       let addressInfo = Object.assign({}, content);
 
@@ -78,7 +78,7 @@ export default {
       addressInfo.appkey = this.appkey;
       addressInfo.isDefault = Number(addressInfo.isDefault);
 
-      console.log('addressInfo ==> ', addressInfo);
+      
 
       this.$toast.loading({
         message: "加载中...",
@@ -92,13 +92,13 @@ export default {
       } else {
         //编辑地址
         //如果是编辑地址，则需要验证用户是否修改过地址数据
-        // console.log('content ==> ', content);
-        // console.log('this.addressInfo ==> ', this.addressInfo);
+        // 
+        // 
 
         let isModify = false;
         for (let key in this.addressInfo) {
           if (content[key] != this.addressInfo[key]) {
-            console.log('用户已经编辑过地址');
+            
             isModify = true;
           }
         }
@@ -124,7 +124,7 @@ export default {
       })
         .then((result) => {
           this.$toast.clear();
-          console.log("result ==> ", result);
+          
          
           if (result.data.code == 700) {
             //token检验无效,则跳到登录页面
@@ -142,7 +142,7 @@ export default {
         })
         .catch((err) => {
           this.$toast.clear();
-          console.log("err ==> ", err);
+          
         });
     },
 
@@ -173,7 +173,7 @@ export default {
       })
         .then((result) => {
           this.$toast.clear();
-          console.log("getAddressDataByAid result ==> ", result);
+          
           if (result.data.code == 700) {
             //token检验无效,则跳到登录页面
             this.$router.push({ name: "Login" });
@@ -186,7 +186,7 @@ export default {
         })
         .catch((err) => {
           this.$toast.clear();
-          console.log("err ==> ", err);
+          
         });
     },
 
@@ -216,7 +216,7 @@ export default {
       })
         .then((result) => {
           this.$toast.clear();
-          console.log("removeAddress result ==> ", result);
+          
           if (result.data.code == 700) {
             //token检验无效,则跳到登录页面
             this.$router.push({ name: "Login" });
@@ -231,7 +231,7 @@ export default {
         })
         .catch((err) => {
           this.$toast.clear();
-          console.log("err ==> ", err);
+          
         });
     }
   },

@@ -63,8 +63,8 @@
     <van-goods-action>
       <van-goods-action-icon :to="{name: 'Shopbag'}" icon="bag" text="购物袋" :badge="bagCount == 0 ? '' : bagCount" :color="bagCount > 0 ? '#0C34BA' : '#646566'" />
       <van-goods-action-icon icon="like" :text="isLike ? '已收藏' : '未收藏'" :color="isLike ? '#0C34BA' : '#646566'" @click="toggleLikeProduct" />
-      <van-goods-action-button text="加入购物车" color="#6A91EC" @click="addShopbag" />
-      <van-goods-action-button text="立即购买" color="#0C34BA" />
+      <van-goods-action-button text="加入购物袋" color="#6A91EC" @click="addShopbag()" />
+      <van-goods-action-button text="立即购买" color="#0C34BA" @click="buy(true)" />
     </van-goods-action>
 
   </div>
@@ -99,7 +99,7 @@
     created() {
       //截取pid
       this.pid = this.$route.params.pid;
-      console.log('this.pid ==> ', this.pid);
+      
 
       //获取商品详情数据
       this.getProductDetail();
@@ -136,7 +136,7 @@
         .then((result) => {
           this.$toast.clear();
 
-          console.log("result ==> ", result);
+          
           if (result.data.code == 600) {
 
             let data = result.data.result[0];
@@ -175,14 +175,14 @@
 
             this.productDetail = data;
 
-            console.log('this.productDetail ==> ', this.productDetail);
+            
           }
 
         })
         .catch((err) => {
           this.$toast.clear();
 
-          console.log("err ==> ", err);
+          
         });
       },
 
@@ -193,8 +193,8 @@
 
       //切换规格
       toggleRule(item, i) {
-        // console.log('item ==> ', item);
-        // console.log('i ==> ', i);
+        // 
+        // 
         if (item.ruleIndex == i) {
           return;
         }
@@ -206,7 +206,7 @@
       findLike() {
         //获取token
         let tokenString = localStorage.getItem('__tk');
-        // console.log('tokenString ==> ', tokenString);
+        // 
         if (!tokenString) {
           return;
         }
@@ -228,7 +228,7 @@
           }
         }).then(result => {
           this.$toast.clear();
-          console.log('findLike result ==> ', result);
+          
           if (result.data.code == 1000) {
             if (result.data.result.length > 0) {
               //收藏商品成功
@@ -239,7 +239,7 @@
 
         }).catch(err => {
           this.$toast.clear();
-          console.log('err ==> ', err);
+          
         })
       },
 
@@ -247,7 +247,7 @@
       toggleLikeProduct() {
         //获取token
         let tokenString = localStorage.getItem('__tk');
-        // console.log('tokenString ==> ', tokenString);
+        // 
         if (!tokenString) {
           //跳回登录页面
           this.$toast('请先登录');
@@ -273,7 +273,7 @@
           }
         }).then(result => {
           this.$toast.clear();
-          console.log('toggle Like result ==> ', result);
+          
           if (result.data.code == 700) {
             //token检验无效,则跳到登录页面
             this.$router.push({name: 'Login'});
@@ -288,7 +288,7 @@
           this.$toast(result.data.msg);
         }).catch(err => {
           this.$toast.clear();
-          console.log('err ==> ', err);
+          
         })
         
       },
@@ -296,7 +296,7 @@
       //查询用户的购物袋数量
       shopBagCount(){
         let tokenString = localStorage.getItem('__tk');
-        // console.log('tokenString ==> ', tokenString);
+        // 
         if (!tokenString) {
           return;
         }
@@ -316,19 +316,19 @@
           }
         }).then(result => {
           this.$toast.clear();
-          console.log('result ==> ', result);
+          
           if (result.data.code == 8000) {
             this.bagCount = result.data.result;
           }
 
         }).catch(err => {
           this.$toast.clear();
-          console.log('err ==> ', err);
+          
         })
       },
 
       //加入购物袋
-      addShopbag() {
+      addShopbag(isBuy) {
         //获取tokenString
         //获取商品pid
         //获取商品规格rule
@@ -336,7 +336,7 @@
         //获取appkey
 
         let tokenString = localStorage.getItem('__tk');
-        // console.log('tokenString ==> ', tokenString);
+        // 
         if (!tokenString) {
           //跳回登录页面
           this.$toast('请先登录');
@@ -359,7 +359,7 @@
 
         data.rule = rs.join('/');
 
-        // console.log('data ==> ', data);
+        // 
         this.$toast.loading({
           message: "加载中...",
           forbidClick: true,
@@ -371,14 +371,22 @@
           data
         }).then(result => {
           this.$toast.clear();
-          console.log('result ==> ', result);
+          
           if (result.data.code == 700) {
             //token检验无效,则跳到登录页面
             this.$router.push({name: 'Login'});
           } else if (result.data.code == 3000) {
-            if (result.data.status == 1) {
-              this.bagCount++;
+            
+            if (!isBuy) {
+              //加入购物袋
+              if (result.data.status == 1) {
+                this.bagCount++;
+              }
+            } else {
+              //立即购买
+              this.$router.push({name: 'Pay', query: {sids: result.data.sid}});
             }
+            
             
           }
 
@@ -386,9 +394,14 @@
 
         }).catch(err => {
           this.$toast.clear();
-          console.log('err ==> ', err);
+          
         })
 
+      },
+
+      //立即购买(后台判断购物袋如果存在该商品，则累加数量，然后跳转到订单结算页面，否则先将该商品加入购物袋，再跳转到订单结算页面)
+      buy(isBuy) {
+        this.addShopbag(isBuy);
       }
     }
   }

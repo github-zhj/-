@@ -16,7 +16,7 @@
       </div>
 
       <div class="list-box">
-        <van-cell v-for="(item, index) in listData" :key="index" :title="item.title" is-link />
+        <van-cell v-for="(item, index) in listData" :key="index" :title="item.title" is-link @click="goPage(item.name)" />
       </div>
 
     </div>
@@ -31,19 +31,24 @@
       return {
         listData: [
           {
-            title: '个人资料'
+            title: '个人资料',
+            name: 'Account'
           },
           {
-            title: '我的订单'
+            title: '我的订单',
+            name: 'Order'
           },
           {
-            title: '我的收藏'
+            title: '我的收藏',
+            name: 'Like'
           },
           {
-            title: '地址管理'
+            title: '地址管理',
+            name: 'Address'
           },
           {
-            title: '安全中心'
+            title: '安全中心',
+            name: 'Secure'
           }
         ],
 
@@ -84,7 +89,7 @@
       })
         .then((result) => {
           this.$toast.clear();
-          console.log("getUserInfo result ==> ", result);
+          
           if (result.data.code == 700) {
             //token检验无效,则跳到登录页面
             this.$router.push({ name: "Login" });
@@ -95,13 +100,13 @@
         })
         .catch((err) => {
           this.$toast.clear();
-          console.log("err ==> ", err);
+          
         });
       },
 
       //上传背景
       uploadBg(file) {
-        // console.log('file ==> ', file);
+        // 
         //允许文件类型
         let type = ['gif', 'png', 'jpg', 'jpeg'];
 
@@ -117,7 +122,7 @@
 
         //判断文件大小 B, 1024B = 1KB, 1024KB = 1MB
         let fileSize = file.file.size / 1024 / 1024;
-        console.log('fileSize ==> ', fileSize);
+        
         if (fileSize > size) {
           this.$toast(`文件允许最大不能超过${size}MB`);
           return;
@@ -125,7 +130,7 @@
 
         //处理base64的标记data:image/jpeg;base64,
         let base64 = file.content.replace(/^data:image\/[A-Za-z]+;base64,/, '');
-        // console.log('base64 ==> ', base64);
+        // 
 
         //发起请求
         let tokenString = localStorage.getItem("__tk");
@@ -154,7 +159,7 @@
       })
         .then((result) => {
           this.$toast.clear();
-          console.log("uploadBg result ==> ", result);
+          
           if (result.data.code == 700) {
             //token检验无效,则跳到登录页面
             this.$router.push({ name: "Login" });
@@ -167,9 +172,13 @@
         })
         .catch((err) => {
           this.$toast.clear();
-          console.log("err ==> ", err);
+          
         });
 
+      },
+
+      goPage(name) {
+        this.$router.push({name});
       }
     }
   }

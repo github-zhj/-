@@ -8,13 +8,18 @@
       @click-left="back"
     />
     <BgBox>
-      <van-address-list
-        :list="list"
-        default-tag-text="默认"
-        :switchable="false"
-        @add="add"
-        @edit="edit"
-      />
+      <div v-if="list.length > 0">
+        <van-address-list
+          :list="list"
+          default-tag-text="默认"
+          :switchable="false"
+          @add="add"
+          @edit="edit"
+        />
+      </div>
+      <div v-else>
+        <van-empty description="没有地址数据" />
+      </div>
     </BgBox>
   </div>
 </template>
@@ -72,7 +77,7 @@
           }
         }).then(result => {
           this.$toast.clear();
-          console.log('addressList result ==> ', result);
+          
           if (result.data.code == 700) {
             //token检验无效,则跳到登录页面
             this.$router.push({name: 'Login'});
@@ -88,7 +93,7 @@
 
         }).catch(err => {
           this.$toast.clear();
-          console.log('err ==> ', err);
+          
         })
       },
 

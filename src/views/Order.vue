@@ -97,10 +97,10 @@ export default {
 
     //切换订单状态 0: 全部, 1: 进行中, 2: 已完成
     changeTab(name, title) {
-      console.log("name ==> ", name);
-      console.log("title ==> ", title);
+      
+      
 
-      console.log("this.tabIndex ==> ", this.tabIndex);
+      
 
       //根据订单状态获取订单数据
       this.getOrderDataByStatus();
@@ -133,7 +133,7 @@ export default {
       })
         .then((result) => {
           this.$toast.clear();
-          console.log("getOrderDataByStatus result ==> ", result);
+          
           if (result.data.code == 700) {
             //token检验无效,则跳到登录页面
             this.$router.push({ name: "Login" });
@@ -169,7 +169,7 @@ export default {
               o.data = [v];
               orderDatas.push(o);
 
-              console.log("orderDatas ==> ", orderDatas);
+              
 
             });
 
@@ -178,13 +178,13 @@ export default {
         })
         .catch((err) => {
           this.$toast.clear();
-          console.log("err ==> ", err);
+          
         });
     },
 
     //确认收货
     confirmReceive(item, index) {
-      console.log("发起确认收货请求");
+      
       let tokenString = localStorage.getItem("__tk");
 
       if (!tokenString) {
@@ -210,7 +210,7 @@ export default {
       })
         .then((result) => {
           this.$toast.clear();
-          console.log("confirmReceive result ==> ", result);
+          
           if (result.data.code == 700) {
             //token检验无效,则跳到登录页面
             this.$router.push({ name: "Login" });
@@ -225,7 +225,7 @@ export default {
         })
         .catch((err) => {
           this.$toast.clear();
-          console.log("err ==> ", err);
+          
         });
 
       
@@ -233,7 +233,7 @@ export default {
 
     //删除订单
     removeOrder(oid, index) {
-      console.log("index ==> ", index);
+      
 
       let tokenString = localStorage.getItem("__tk");
 
@@ -260,7 +260,7 @@ export default {
       })
         .then((result) => {
           this.$toast.clear();
-          console.log("removeOrder result ==> ", result);
+          
           if (result.data.code == 700) {
             //token检验无效,则跳到登录页面
             this.$router.push({ name: "Login" });
@@ -272,7 +272,7 @@ export default {
         })
         .catch((err) => {
           this.$toast.clear();
-          console.log("err ==> ", err);
+          
         });
 
       

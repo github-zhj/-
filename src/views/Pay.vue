@@ -91,7 +91,7 @@ export default {
 
     //截取查询参数
     this.sids = this.$route.query.sids.split('-');
-    console.log('this.sids ==> ', this.sids);
+    
 
     //根据sids获取购物袋数据
     this.getShopbagBySids();
@@ -113,8 +113,8 @@ export default {
 
     //选择地址
     selectAddress(item, index) {
-      console.log("item ==> ", item);
-      console.log("index ==> ", index);
+      
+      
 
       this.isOpen = false;
 
@@ -152,7 +152,7 @@ export default {
       })
         .then((result) => {
           this.$toast.clear();
-          console.log("addressList result ==> ", result);
+          
           if (result.data.code == 700) {
             //token检验无效,则跳到登录页面
             this.$router.push({ name: "Login" });
@@ -174,7 +174,7 @@ export default {
         })
         .catch((err) => {
           this.$toast.clear();
-          console.log("err ==> ", err);
+          
         });
     },
 
@@ -205,7 +205,7 @@ export default {
       })
         .then((result) => {
           this.$toast.clear();
-          console.log("getShopbagBySids result ==> ", result);
+          
           if (result.data.code == 700) {
             //token检验无效,则跳到登录页面
             this.$router.push({ name: "Login" });
@@ -225,7 +225,7 @@ export default {
         })
         .catch((err) => {
           this.$toast.clear();
-          console.log("err ==> ", err);
+          
         });
     },
 
@@ -259,7 +259,7 @@ export default {
       })
         .then((result) => {
           this.$toast.clear();
-          console.log("pay result ==> ", result);
+          
           if (result.data.code == 700) {
             //token检验无效,则跳到登录页面
             this.$router.push({ name: "Login" });
@@ -274,12 +274,19 @@ export default {
         })
         .catch((err) => {
           this.$toast.clear();
-          console.log("err ==> ", err);
+          
         });
     },
 
     //结算提示
     payBox() {
+
+      //判断是否选择地址
+      if (!this.chosenAddressId) {
+        this.$toast('请选择收货地址');
+        return;
+      }
+
       this.$dialog.confirm({
         title: '确认订单',
         message: '是否立即结算?',
@@ -290,7 +297,7 @@ export default {
         this.pay();
 
       }).catch(err => {
-        console.log('err ==> ', err);
+        
       })
     }
 

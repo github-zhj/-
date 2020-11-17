@@ -63,6 +63,36 @@ export const routes = [
   },
 
   {
+    path: '/account',
+    name: 'Account',
+    component: () => import('../views/Account.vue')
+  },
+
+  {
+    path: '/like',
+    name: 'Like',
+    component: () => import('../views/Like.vue')
+  },
+
+  {
+    path: '/secure',
+    name: 'Secure',
+    component: () => import('../views/Secure.vue')
+  },
+
+  {
+    path: '/search',
+    name: 'Search',
+    component: () => import('../views/Search.vue')
+  },
+
+  {
+    path: '/forgot',
+    name: 'Forgot',
+    component: () => import('../views/Forgot.vue')
+  },
+
+  {
     path: '*',
     redirect: {
       name: 'Home'

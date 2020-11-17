@@ -4,7 +4,7 @@
     <van-nav-bar
       left-text="返回"
       right-text="先逛一逛"
-      @click-right="goState"
+      @click-right="goState('Home')"
     >
       <template #left>
         <div class="nav-left">
@@ -37,13 +37,13 @@
           :type="isRegisterPassword ? 'password' : 'text'"
           name="密码"
           label="密码"
-          placeholder="密码"
+          placeholder="密码必须为字母开头"
           :right-icon="isRegisterPassword ? 'closed-eye' : 'eye-o'"
           autocomplete="off"
           @click-right-icon="toggleRegsiterPasswordType"
         />
         <div class="forgot">
-          <span>忘记密码?</span>
+          <span @click="goState('Forgot')">忘记密码?</span>
         </div>
 
         <div class="commit-btn">
@@ -78,7 +78,7 @@
           :type="isRegisterPassword ? 'password' : 'text'"
           name="密码"
           label="密码"
-          placeholder="字母数字_组合且字母开头(6-16位)"
+          placeholder="密码必须为字母开头"
           :right-icon="isRegisterPassword ? 'closed-eye' : 'eye-o'" 
           autocomplete="off"
           @click-right-icon="toggleRegsiterPasswordType"
@@ -88,7 +88,7 @@
           v-model="userRegisterInfo.nickName"
           name="昵称"
           label="昵称"
-          placeholder="字母数字_汉字组合(1-10位)"
+          placeholder="昵称"
           autocomplete="off"
         />
 
@@ -159,12 +159,12 @@
           },
           password: {
             value: this.userRegisterInfo.password,
-            errorMsg: '密码格式不正确',
+            errorMsg: '密码由数字字母下划线组合(6-16字符)',
             reg: /^[A-Za-z]\w{5,15}$/
           },
           nickName: {
             value: this.userRegisterInfo.nickName,
-            errorMsg: '昵称格式不正确',
+            errorMsg: '昵称由字母数字下划线汉字组合(1-10字符)',
             reg: /^[\w\u4e00-\u9fa5]{1,10}$/
           },
         };
@@ -173,13 +173,13 @@
 
         if (isPass) {
 
-          // console.log('this.appkey ==> ', this.appkey);
+          // 
 
           //复制用户注册信息
           let userInfo = Object.assign({}, this.userRegisterInfo);
           userInfo.appkey = this.appkey;
-          console.log('userInfo ==> ', userInfo);
-          console.log('this.userRegisterInfo ==> ', this.userRegisterInfo);
+          
+          
 
           //启动加载提示
           this.$toast.loading({
@@ -212,12 +212,12 @@
               this.$toast(result.data.msg);
             }
 
-            // console.log('result ==> ', result);
+            // 
           }).catch(err => {
             //关闭加载提示
             this.$toast.clear();
 
-            console.log('err ==> ', err);
+            
           })
 
         }
@@ -234,7 +234,7 @@
           },
           password: {
             value: this.userInfo.password,
-            errorMsg: '密码格式不正确',
+            errorMsg: '密码由数字字母下划线组合(6-16字符)',
             reg: /^[A-Za-z]\w{5,15}$/
           }
         };
@@ -265,7 +265,7 @@
           }).then(result => {
             this.$toast.clear();
 
-            console.log('result ==> ', result);
+            
 
             if (result.data.code == 200) {
               //登录成功
@@ -282,16 +282,16 @@
           }).catch(err => {
             this.$toast.clear();
 
-            console.log('err ==> ', err);
+            
           })        
 
 
         }
       },
 
-      //跳转到首页
-      goState() {
-        this.$router.push({name: 'Home'});
+      //跳转页面
+      goState(name) {
+        this.$router.push({name});
       }
     }
   }

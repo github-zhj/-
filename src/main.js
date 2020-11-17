@@ -94,7 +94,7 @@ axios.interceptors.request.use(config => {
     //重新赋值config.data
     config.data = paramsString.slice(0, -1);
 
-    // console.log('config.data ==> ', config.data);
+    // 
 
   }
 
@@ -116,23 +116,23 @@ Vue.filter('decimal', (v, n = 2) => {
 //格式化日期
 Vue.filter('formatDate', (v, format) => {
 
-  // console.log('v ==> ', v);
-  // console.log('format ==> ', format);
+  // 
+  // 
 
   //创建日期对象
   let date = new Date(v);
 
   //格式化年份
   let year = date.getFullYear().toString();
-  // console.log('year ==> ', year);
+  // 
   if (/(y+)/.test(format)){
     //获取匹配组的内容
     var content = RegExp.$1;
-    // console.log('content ==> ', content);
+    // 
     format = format.replace(content, year.slice(year.length - content.length));
   }
 
-  // console.log('format ==> ', format);
+  // 
 
   //格式化月份、日份、时、分、秒
   let o = {
@@ -143,20 +143,20 @@ Vue.filter('formatDate', (v, format) => {
     s: date.getSeconds()
   };
 
-  // console.log('o ==> ', o);
+  // 
 
   for (let key in o) {
     //创建动态正则表达式
     let reg = new RegExp(`(${key}+)`);
-    // console.log('reg ==> ', reg);
+    // 
 
     if (reg.test(format)) {
       //获取组匹配的内容
       let groupContent = RegExp.$1;
-      // console.log('groupContent ==> ', groupContent);
+      // 
 
       format = format.replace(groupContent, o[key] >= 10 ? o[key] : groupContent.length == 2 ? '0' + o[key] : o[key]);
-      // console.log('format ==> ', format);
+      // 
     }
     
   }
